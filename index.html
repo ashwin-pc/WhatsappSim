@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>File Reader</title>
+
+    <!--Styles  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
+    <link rel="stylesheet" href="./dependencies/WhatsappSim/WhatsappSim.css">
+    <link rel="stylesheet" href="./dependencies/typicons/typicons.min.css">
+</head>
+
+<body>
+
+    <div class="pane-chat-tile"></div>
+    
+    <section class="hero is-small is-primary is-bold">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    Parse Text
+                </h1>
+                <h2 class="subtitle">
+                    Lets parse some files
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <!--Input/Output section  -->
+    <section class="section">
+        <div class="box">
+            <input class="file-input" type="file" name="resume">
+            <button type="button" class="button is-primary play" disabled="true"><span class="typcn typcn-media-play"></span></button>
+            <button type="button" class="button is-primary pause" disabled="true"><span class="typcn typcn-media-pause"></button>
+            <button type="button" class="button is-primary stop" disabled="true"><span class="typcn typcn-media-stop"></button>
+            <button type="button" class="button is-primary reset" disabled="true"><span class="typcn typcn-refresh"></button>
+        </div>
+        <div class="box" id="stats"></div>
+        <div class="" style="display:none;" id="output"></div>
+    </section>
+
+    <!--Scripts  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+    <script src="./dependencies/WhatsappSim/WhatsappSimClass.js"></script>
+    <script src="./js/client.js"></script>
+</body>
+
+</html>
