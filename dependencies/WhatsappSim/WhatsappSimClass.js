@@ -9,8 +9,9 @@
      */
     function WhatsappSimClass() {
         // Defaults
-        this.replaySpeed = 1000;
+        this.replayInterval = 1000;
         this.replayType = 'auto';
+        this.replayScalingFactor = 1;
         this.state = "paused";
         this.queue = [];
         this.conversation = [];
@@ -62,11 +63,15 @@
         txtArr.forEach(function (line) {
             var testType = type.testRegex.test(line);
             if (testType) {
+
+                // Check if the text Object is empty 
+                // (if it passes the test type check, it will skip this condition only for the first message)
                 if (txtOb !== null) {
                     txtObArr.push(txtOb);
                     txtOb = null;
                 }
 
+                // Form the basic message
                 lineSplit = line.split(type.splitRegx);
                 txtOb = {
                     date: lineSplit[0],
@@ -80,7 +85,7 @@
                 }
 
                 // Set the timestamp field
-                setTimestamp(txtOb);
+                setTimestamp(txtOb, txtObArr);
 
                 // If for yourself the name and number is present replace it in the chat
                 if (opts.me && opts.me.name && opts.me.number) {
@@ -97,16 +102,21 @@
                 }
 
                 // Check if the message is a continuation message of the same author
-                var prevTxt = txtObArr[txtObArr.length-1];
+                var prevTxt = txtObArr[txtObArr.length - 1];
                 if (txtObArr[0] && (txtOb.name == prevTxt.name)) {
                     prevTxt.continuation = true;
                 } else {
                     txtOb.tail = true;
                 }
 
+                // Handle media ommitted
+                if (txtOb.txt == "<Media omitted>") {
+                    txtOb.txt = "<i>Cannot show media</i>";
+                }
+
                 // Add author to authors list
                 var exists = false;
-                authors.forEach(function(author) {
+                authors.forEach(function (author) {
                     if (author == txtOb.name) {
                         exists = true
                     }
@@ -191,7 +201,7 @@
 
         // Set options
         self.replayType = (opts.replayType) ? opts.replayType : self.replayType;
-        self.replaySpeed = (opts.replaySpeed) ? opts.replaySpeed : self.replaySpeed;
+        self.replayInterval = (opts.replayInterval) ? opts.replayInterval : self.replayInterval;
     }
 
     /**
@@ -202,7 +212,7 @@
      */
     WhatsappSimClass.prototype.addFormat = function addFormat(format) {
         var self = this;
-        
+
         // Check if the formats is correct
         if (!format.name || !format.testRegex || !format.splitRegx) {
             return {
@@ -212,7 +222,7 @@
         }
 
         self.types.push(format);
-        return {status:true};
+        return { status: true };
     }
 
     /**
@@ -233,10 +243,45 @@
     /**
      * setTimestamp (Private)
      * used to set the timestamp information on the message
+     * @param {Object} msg the current message to be modified with the timestamp field
+     * @param {Array} prevMsgArray the array of message objects added so far
      */
-    function setTimestamp(msg) {
+    function setTimestamp(msg, prevMsgArray) {
+        // Extract the time field from the message
         var timeRegex = /\d{1,2}:\d{2}\s[AP]M/g;
         msg.timestamp = timeRegex.exec(msg.date);
+
+        // Find time difference between the messages and set the time factor
+        // The time factor will be a value between 100 - 500 for messages within 4 mins
+        // and between 1000 - 2000 for messages between 5 - 30 mins
+        // and 5000 for anything longer than 30 mins
+
+        var len = prevMsgArray.length;
+        if (len) {
+            var d1 = prevMsgArray[len-1].date.split(timeRegex).join();
+            var d2 = msg.date.split(timeRegex).join();
+            var diff;
+
+            // Check if dates are different
+            if (d1 != d2) {
+                msg.timeInterval = 5000;
+                return;
+            } 
+
+            d1 = new Date("1/1/2000 " + msg.timestamp);
+            d2 = new Date("1/1/2000 " + prevMsgArray[len-1].timestamp);
+            diff = (d1 - d2) / 60000; // To convert difference to mins
+
+            // Set interval based on time difference
+            if (diff < 5) {
+                msg.timeInterval = (diff + 1) * 100;
+            } else if (diff <= 30) {
+                msg.timeInterval = 40 * diff + 800;
+            } else {
+                msg.timeInterval = 5000;
+            }
+        }
+
     }
 
     /**
@@ -251,13 +296,48 @@
             return;
         }
 
-        conversations.forEach(function(msg) {
-            authors.forEach(function(author, authorIndex) {
+        conversations.forEach(function (msg) {
+            authors.forEach(function (author, authorIndex) {
                 if (msg.name == author) {
                     msg.authorId = authorIndex + 1;
                 }
             }, this);
         }, this);
+    }
+
+    /**
+     * getNextInterval() (Private)
+     * gets the wait time for the next message
+     * @param {Object} msg the message object that is to be emmitted next
+     * @param {Object} self the message object that is to be emmitted next
+     * @return {Number} time in milliseconds for the next message
+     */
+    function getNextInterval(msg, self) {
+        var time = 0;
+
+        if (!msg) {
+            return time;
+        }
+
+        switch (self.replayType) {
+            case "random":
+                // TODO: Generate a value between 0.5 and 5 seconds with a mean of 1
+                var min = 0.5;
+                var max = 2;
+                time = Math.floor(Math.random() * (max - min + 1) + min) * 1000 * self.replayScalingFactor;
+                break;
+
+            case "time":
+                time = msg.timeInterval * self.replayScalingFactor;
+                break;
+
+            case "auto":
+            default:
+                time = self.replayInterval * self.replayScalingFactor;
+                break;
+        }
+
+        return time;
     }
 
     /**
@@ -275,15 +355,15 @@
                     self.onMessage(msg);
 
                     // Clear existing timeouts and Set timeout
-                    var timeoutPeriod = (self.replayType == 'auto' || !msg.timeout) ? self.replaySpeed : msg.timeout;
+                    var timeoutPeriod = getNextInterval(self.queue[0], self);
                     clearTimeout(self.timeoutInstance);
-                    self.timeoutInstance = setTimeout(function() {
+                    self.timeoutInstance = setTimeout(function () {
                         scheduler(self);
                     }, timeoutPeriod);
                 } else {
                     self.state = "stopped";
                 }
-                
+
                 break;
 
             case "reset":

@@ -9,6 +9,40 @@
     clear: both;
     display: block;
 }
+@media (max-width: 1024px) {
+    .msg {
+        padding-left:7%;
+        padding-right: 7%
+    }
+}
+
+@media (max-width: 968px) {
+    .msg {
+        padding-left:6.5%;
+        padding-right: 6.5%
+    }
+}
+
+@media (max-width: 912px) {
+    .msg {
+        padding-left:6%;
+        padding-right: 6%
+    }
+}
+
+@media (max-width: 856px) {
+    .msg {
+        padding-left:5.5%;
+        padding-right: 5.5%
+    }
+}
+
+@media (max-width: 800px) {
+    .msg {
+        padding-left:5%;
+        padding-right: 5%
+    }
+}
 .bubble {
     padding: 6px 0 8px 0;
     padding-left: 9px;

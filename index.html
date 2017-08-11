@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>File Reader</title>
+    <title>WhatsappSim</title>
 
     <!--Styles  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
@@ -21,10 +21,10 @@
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
-                    Parse Text
+                    Whatsapp Conversations
                 </h1>
                 <h2 class="subtitle">
-                    Lets parse some files
+                    Relive those memories
                 </h2>
             </div>
         </div>
@@ -32,14 +32,46 @@
 
     <!--Input/Output section  -->
     <section class="section">
-        <div class="box">
-            <input class="file-input" type="file" name="resume">
-            <button type="button" class="button is-primary play" disabled="true"><span class="typcn typcn-media-play"></span></button>
-            <button type="button" class="button is-primary pause" disabled="true"><span class="typcn typcn-media-pause"></button>
-            <button type="button" class="button is-primary stop" disabled="true"><span class="typcn typcn-media-stop"></button>
-            <button type="button" class="button is-primary reset" disabled="true"><span class="typcn typcn-refresh"></button>
+        
+        <div class="tile is-ancestor">
+            <div class="tile is-4 is-vertical is-parent">
+                <div class="tile is-child box">
+                    <p class="title">Load file</p>
+                    <input class="file-input" type="file" name="resume">
+                </div>
+                <div class="tile is-child box">
+                    <p class="title">Controls</p>
+                    <div class="columns is-gapless">
+                        <!--Play buttons  -->
+                        <div class="media-btns column">
+                            <button type="button" class="button is-primary play" disabled="true"><span class="typcn typcn-media-play"></span></button>
+                            <button type="button" class="button is-primary pause" disabled="true"><span class="typcn typcn-media-pause"></button>
+                            <button type="button" class="button is-primary stop" disabled="true"><span class="typcn typcn-media-stop"></button>
+                            <button type="button" class="button is-primary reset" disabled="true"><span class="typcn typcn-refresh"></button>
+                        </div>
+                        <!--Options  -->
+                        <div class="options column">
+                            <div class="select">
+                                <select data-key="replayType">
+                                    <option value="auto" selected>Auto</option>
+                                    <option value="random">Random</option>
+                                    <option value="time">Time Based</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tile is-parent">
+                <div class="tile is-child box">
+                    <p class="title">Paste Chat</p>
+                    <textarea class="textarea" rows="7" placeholder="e.g. Paste your Whatsapp Chat in Here"></textarea>
+                </div>
+            </div>
         </div>
-        <div class="box" id="stats"></div>
+
+        <!--Uncomment to see queue and state statistics  -->
+         <!-- <div class="box" id="stats"></div>  -->
         <div class="" style="display:none;" id="output"></div>
     </section>
 
