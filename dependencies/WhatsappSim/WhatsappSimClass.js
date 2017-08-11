@@ -83,13 +83,20 @@
                     txtOb = null;
                 }
 
-                // Form the basic message
                 lineSplit = line.split(type.splitRegx);
+                // Form the basic message
                 txtOb = {
                     date: lineSplit[0],
-                    name: lineSplit[2],
-                    txt: lineSplit.splice(4).join("")
+                    name: lineSplit[2]
                 };
+
+                // Check for system info (Added to, joined the group etc)
+                if (lineSplit.length < 5) {
+                    txtOb.txt = lineSplit[2];
+                    txtOb.system = true;
+                } else {
+                    txtOb.txt = lineSplit.splice(4).join("")
+                }
 
                 // Handle bracket format
                 if (type.hasBracket) {
@@ -244,6 +251,7 @@
      * creates a DOM Element with the structure of a whatsapp message
      */
     WhatsappSimClass.prototype.createMsgElement = function createMsgElement(msg) {
+        // TODO: Clean up code
         var msgEle = document.createElement("div");
         var self = (msg.self) ? "message-out" : "message-in";
         var continuation = (msg.continuation) ? "msg-continuation" : "";
@@ -251,14 +259,22 @@
         var hasAuthor = (msg.authorId && !msg.self && msg.tail) ? "has-author" : "";
         var author = (msg.authorId && !msg.self && msg.tail) ? "<div class='author color-" + msg.authorId + "'>" + msg.name + "</div>" : "";
 
-        msgEle.innerHTML = "<div class='msg " + continuation + "'>\
-                                <div class='bubble " + self + " " + tail + " " + hasAuthor + "'>\
-                                    " + author + "\
-                                    <span class='tail-container highlight'></span>\
-                                    <div class='message-text'>" + msg.txt + "</div>\
-                                    <div class='message-meta'>"+ msg.timestamp + "</div>\
-                                </div>\
-                            </div>";
+        if (msg.system) {
+            msgEle.innerHTML = "<div class='msg msg-system'>\
+                                    <div class='message message-system'>\
+                                        " + msg.txt + "\
+                                    </div>\
+                                </div>";
+        } else {
+            msgEle.innerHTML = "<div class='msg " + continuation + "'>\
+                                    <div class='bubble " + self + " " + tail + " " + hasAuthor + "'>\
+                                        " + author + "\
+                                        <span class='tail-container highlight'></span>\
+                                        <div class='message-text'>" + msg.txt + "</div>\
+                                        <div class='message-meta'>"+ msg.timestamp + "</div>\
+                                    </div>\
+                                </div>";
+        }
 
         return msgEle;
     }
