@@ -10,11 +10,16 @@
     function WhatsappSimClass() {
         // Defaults
         this.replayInterval = 1000;
-        this.replayType = 'auto';
+        this.replayType = 'word';
         this.replayScalingFactor = 1;
         this.state = "paused";
         this.queue = [];
         this.conversation = [];
+        this.me = {};
+
+        // User set functions
+        this.onMessage = function() {}
+        this.onComplete = function() {}
 
         // Types of formats
         this.types = [
@@ -32,6 +37,10 @@
                 testRegex: /^\[\d{2}\/\d{2},\s\d{1,2}:\d{2}\s[AP]M\]/,
                 splitRegx: /(\]\s|\:\s)/,
                 hasBracket: true
+            }, {
+                name: "emailOld",
+                testRegex: /^\d{1,2}\/\d{1,2}\/\d{2},\s\d{1,2}:\d{2}\s[AP]M/,
+                splitRegx: /(\s-\s|\:\s)/
             }
         ]
     }
@@ -48,6 +57,9 @@
         var opts = options || {};
         var txtArr = txt.split('\n');
         var type, txtObArr = [], txtOb = null, lineSplit, authors = [], noSelfPresent = true;
+
+        // Set config
+        self.config(opts);
 
         // Identify the format of the text
         type = identifyWAT(txtArr[0], self);
@@ -88,14 +100,14 @@
                 setTimestamp(txtOb, txtObArr);
 
                 // If for yourself the name and number is present replace it in the chat
-                if (opts.me && opts.me.name && opts.me.number) {
+                if (self.me) {
                     // Incase log contains your number and not name
-                    if (opts.me.number == txtOb.name) {
-                        txtOb.name = opts.me.name
+                    if (self.me.number == txtOb.name) {
+                        txtOb.name = self.me.name
                     }
 
                     // Indicate that it is you
-                    if (opts.me.name == txtOb.name) {
+                    if (self.me.name == txtOb.name) {
                         txtOb.self = true;
                         noSelfPresent = false;
                     }
@@ -202,6 +214,8 @@
         // Set options
         self.replayType = (opts.replayType) ? opts.replayType : self.replayType;
         self.replayInterval = (opts.replayInterval) ? opts.replayInterval : self.replayInterval;
+        self.me.name = (opts.me && opts.me.name) ? opts.me.name : self.me.name;
+        self.me.number = (opts.me && opts.me.number) ? opts.me.number : self.me.number;
     }
 
     /**
@@ -223,6 +237,30 @@
 
         self.types.push(format);
         return { status: true };
+    }
+
+    /**
+     * createMsgElement()
+     * creates a DOM Element with the structure of a whatsapp message
+     */
+    WhatsappSimClass.prototype.createMsgElement = function createMsgElement(msg) {
+        var msgEle = document.createElement("div");
+        var self = (msg.self) ? "message-out" : "message-in";
+        var continuation = (msg.continuation) ? "msg-continuation" : "";
+        var tail = (msg.tail) ? "tail" : "";
+        var hasAuthor = (msg.authorId && !msg.self && msg.tail) ? "has-author" : "";
+        var author = (msg.authorId && !msg.self && msg.tail) ? "<div class='author color-" + msg.authorId + "'>" + msg.name + "</div>" : "";
+
+        msgEle.innerHTML = "<div class='msg " + continuation + "'>\
+                                <div class='bubble " + self + " " + tail + " " + hasAuthor + "'>\
+                                    " + author + "\
+                                    <span class='tail-container highlight'></span>\
+                                    <div class='message-text'>" + msg.txt + "</div>\
+                                    <div class='message-meta'>"+ msg.timestamp + "</div>\
+                                </div>\
+                            </div>";
+
+        return msgEle;
     }
 
     /**
@@ -252,31 +290,34 @@
         msg.timestamp = timeRegex.exec(msg.date);
 
         // Find time difference between the messages and set the time factor
-        // The time factor will be a value between 100 - 500 for messages within 4 mins
+        // The time factor will be a value between 500 - 1000 for messages within 4 mins
         // and between 1000 - 2000 for messages between 5 - 30 mins
         // and 5000 for anything longer than 30 mins
 
         var len = prevMsgArray.length;
         if (len) {
-            var d1 = prevMsgArray[len-1].date.split(timeRegex).join();
+            var d1 = prevMsgArray[len - 1].date.split(timeRegex).join();
             var d2 = msg.date.split(timeRegex).join();
-            var diff;
+            var x;
 
             // Check if dates are different
             if (d1 != d2) {
                 msg.timeInterval = 5000;
                 return;
-            } 
+            }
 
             d1 = new Date("1/1/2000 " + msg.timestamp);
-            d2 = new Date("1/1/2000 " + prevMsgArray[len-1].timestamp);
-            diff = (d1 - d2) / 60000; // To convert difference to mins
+            d2 = new Date("1/1/2000 " + prevMsgArray[len - 1].timestamp);
+            msg.diff = x = (d1 - d2) / 60000; // To convert difference to mins
+
 
             // Set interval based on time difference
-            if (diff < 5) {
-                msg.timeInterval = (diff + 1) * 100;
-            } else if (diff <= 30) {
-                msg.timeInterval = 40 * diff + 800;
+            if (x == 0) {
+                msg.timeInterval = 700;
+            } else if (x < 5) {
+                msg.timeInterval = 250 * x + 1000;
+            } else if (x <= 30) {
+                msg.timeInterval = 80 * x + 1600;
             } else {
                 msg.timeInterval = 5000;
             }
@@ -308,11 +349,12 @@
     /**
      * getNextInterval() (Private)
      * gets the wait time for the next message
+     * @param {Object} prevMsg the message object that was just emmitted
      * @param {Object} msg the message object that is to be emmitted next
      * @param {Object} self the message object that is to be emmitted next
      * @return {Number} time in milliseconds for the next message
      */
-    function getNextInterval(msg, self) {
+    function getNextInterval(prevMsg, msg, self) {
         var time = 0;
 
         if (!msg) {
@@ -331,6 +373,14 @@
                 time = msg.timeInterval * self.replayScalingFactor;
                 break;
 
+            case "word":
+                time = getWordInterval(prevMsg.txt) * self.replayScalingFactor;
+                break;
+
+            case "all":
+                time = 0;
+                break;
+
             case "auto":
             default:
                 time = self.replayInterval * self.replayScalingFactor;
@@ -338,6 +388,26 @@
         }
 
         return time;
+    }
+
+    /**
+     * getWordInterval() (Private)
+     * a funtionto return the interval between messages depending on word size
+     * @param {String} txt the txt to count words for
+     * @return {Number} returns the word count
+     */
+    function getWordInterval(txt) {
+        var count, interval;
+        var s = txt;
+
+        s = s.replace(/(^\s*)|(\s*$)/gi, "");
+        s = s.replace(/[ ]{2,}/gi, " ");
+        s = s.replace(/\n /, "\n");
+        count = s.split(' ').length;
+
+        // equation: average 3 words per second
+        interval = count * 1000 / 3;
+        return interval;
     }
 
     /**
@@ -355,13 +425,14 @@
                     self.onMessage(msg);
 
                     // Clear existing timeouts and Set timeout
-                    var timeoutPeriod = getNextInterval(self.queue[0], self);
+                    var timeoutPeriod = getNextInterval(msg, self.queue[0], self);
                     clearTimeout(self.timeoutInstance);
                     self.timeoutInstance = setTimeout(function () {
                         scheduler(self);
                     }, timeoutPeriod);
                 } else {
                     self.state = "stopped";
+                    self.onComplete();
                 }
 
                 break;

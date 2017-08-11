@@ -8,19 +8,12 @@ $input.on("change", function () {
     var reader = new FileReader();
     reader.onload = function () {
         var text = reader.result;
-        var convo = WhatsappSim.parse(text, {
-            me: {
-                name: "Ashwin PC",
-                number: "+91 81052 80436"
-            }
-        });
+        var convo = WhatsappSim.parse(text);
 
         if (!convo.status) {
             alert(convo.err);
             return;
         }
-
-        setupWhatsappSim();
 
         $(".button").prop("disabled", false);
     };
@@ -28,15 +21,9 @@ $input.on("change", function () {
 })
 
 $("textarea").on("change", function () {
-    console.log("here");
     var text = $(this).val();
 
-    var convo = WhatsappSim.parse(text, {
-        me: {
-            name: "Ashwin PC",
-            number: "+91 81052 80436"
-        }
-    });
+    var convo = WhatsappSim.parse(text);
 
     if (!convo.status) {
         alert(convo.err);
@@ -44,8 +31,6 @@ $("textarea").on("change", function () {
     }
 
     $("#output").html("");
-
-    setupWhatsappSim();
 
     $(".button").prop("disabled", false);
 })
@@ -78,6 +63,38 @@ $("select").on("change", function () {
     WhatsappSim.config(configOb)
 })
 
+// handle the Me fields
+$(document).ready(function () {
+    var me = {};
+    $(".input.me").each(function () {
+        var key = $(this).data("key")
+        var meVal = localStorage.getItem(key)
+
+        if (meVal) {
+            $(this).val(meVal);
+            me[key] = meVal;
+        }
+    })
+    WhatsappSim.config({me: me})
+})
+$(".input.me").on("change", function () {
+
+    var key = $(this).data("key")
+    var meVal = $(this).val()
+    var me = {}
+    localStorage.setItem(key,meVal)
+
+    me[key] = meVal;
+    WhatsappSim.config({me:me})
+})
+$(".clear-me").on("click", function () {
+    $(".input.me").each(function () {
+        $(this).val("");
+        localStorage.removeItem($(this).data("key"));
+    })
+
+})
+
 function updateStats() {
     $('#stats').html(
         "state: " + WhatsappSim.state + "<br>" +
@@ -85,31 +102,21 @@ function updateStats() {
     );
 }
 
-function setupWhatsappSim() {
+(function () {
     WhatsappSim.onMessage = function (msg) {
-        var self = (msg.self) ? "message-out" : "message-in";
-        var continuation = (msg.continuation) ? "msg-continuation" : "";
-        var tail = (msg.tail) ? "tail" : "";
-        var hasAuthor = (msg.authorId && !msg.self && msg.tail) ? "has-author" : "";
-        var author = (msg.authorId && !msg.self && msg.tail) ? "<div class='author color-" + msg.authorId + "'>" + msg.name + "</div>" : "";
-
         $("#output")
-            .append($(
-                "<div class='msg " + continuation + "'>\
-                        <div class='bubble " + self + " " + tail + " " + hasAuthor + "'>\
-                            " + author + "\
-                            <span class='tail-container highlight'></span>\
-                            <div class='message-text'>" + msg.txt + "</div>\
-                            <div class='message-meta'>"+ msg.timestamp + "</div>\
-                        </div>\
-                    </div>"))
+            .append(WhatsappSim.createMsgElement(msg))
             .show();
 
         updateStats();
 
         document.body.scrollTop = document.body.scrollHeight;
     }
-}
+
+    WhatsappSim.onComplete = function () {
+        updateStats();
+    }
+})();
 
 /**
  * TODO
