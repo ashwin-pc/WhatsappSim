@@ -122,6 +122,5 @@ function updateStats() {
  * TODO
  * 
  * - Add Readme
- * - handle all conditions of the log (added to, joined the conversation etc)
  * - add setters for all configurations
  */
