@@ -72,6 +72,9 @@
             };
         }
 
+        // Clear previous authors list
+        self.authors = [];
+
         // Construct Parsed Object
         txtArr.forEach(function (line) {
             var testType = type.testRegex.test(line);

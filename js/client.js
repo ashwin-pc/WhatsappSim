@@ -16,9 +16,10 @@ $input.on("change", function () {
         }
 
         $("#output").html("");
-        $("#authors").append(WhatsappSim.authors.map(function (x) {
-        return $("<option>" + x + "</option>")
-    }))
+        $("#authors").find('option').remove();
+        $("#authors").append("<option>Select Author</option>").append(WhatsappSim.authors.map(function (x) {
+            return $("<option>" + x + "</option>")
+        }))
         $(".button").prop("disabled", false);
     };
     reader.readAsText(self.files[0]);
@@ -35,7 +36,8 @@ $("textarea").on("change", function () {
     }
 
     $("#output").html("");
-    $("#authors").html("").append(WhatsappSim.authors.map(function (x) {
+    $("#authors").find('option').remove();
+    $("#authors").append("<option>Select Author</option>").append(WhatsappSim.authors.map(function (x) {
         return $("<option>" + x + "</option>")
     }))
 
