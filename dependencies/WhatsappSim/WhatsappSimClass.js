@@ -16,6 +16,7 @@
         this.queue = [];
         this.conversation = [];
         this.me = {};
+        this.authors = [];
 
         // User set functions
         this.onMessage = function() {}
@@ -56,7 +57,7 @@
         var self = this;
         var opts = options || {};
         var txtArr = txt.split('\n');
-        var type, txtObArr = [], txtOb = null, lineSplit, authors = [], noSelfPresent = true;
+        var type, txtObArr = [], txtOb = null, lineSplit, noSelfPresent = true;
 
         // Set config
         self.config(opts);
@@ -135,13 +136,13 @@
 
                 // Add author to authors list
                 var exists = false;
-                authors.forEach(function (author) {
+                self.authors.forEach(function (author) {
                     if (author == txtOb.name) {
                         exists = true
                     }
                 }, this);
                 if (!exists) {
-                    authors.push(txtOb.name)
+                    self.authors.push(txtOb.name)
                 }
 
             } else {
@@ -156,7 +157,7 @@
         txtObArr.push(txtOb);
 
         // For group conversations build author field
-        setAuthorField(txtObArr, authors, noSelfPresent);
+        populateAuthorField(txtObArr, self.authors, noSelfPresent);
 
         // Store conversation array
         if (!opts.dontStore) {
@@ -280,6 +281,51 @@
     }
 
     /**
+     * setPrimaryAuthor()
+     * set the default author in the chat
+     * @param {String} primaryAuthor can be the array index or name of the author
+     * @return {Object} the success or failure to set author
+     */
+    WhatsappSimClass.prototype.setPrimaryAuthor = function setPrimaryAuthor(primaryAuthor) {
+        var self = this;
+        var status = true;
+        var msg, index = -2;
+
+        // set index based on name or index
+        if (typeof primaryAuthor == "string") {
+            index = self.authors.indexOf(primaryAuthor);
+        } else if (typeof primaryAuthor == "number") {
+            index = primaryAuthor;
+        }
+        
+        if (index < 0) {
+            return {
+                status: false,
+                err: "inncorrect type or author not found"
+            }
+        }
+
+        // Set self value for conversation and queue
+        self.conversation.forEach(function(msg) {
+            delete msg.self;
+            if (msg.name == self.authors[index]) {
+                msg.self = true;
+            }
+        }, this);
+        self.queue.forEach(function(msg) {
+            delete msg.self;
+            if (msg.name == self.authors[index]) {
+                msg.self = true;
+            }
+        }, this);
+
+        return {
+            status: true
+        }
+
+    }
+
+    /**
      * IdentifyWAT Function (Private)
      * Used to identify the type of format used in the text
      */
@@ -342,13 +388,13 @@
     }
 
     /**
-     * setAuthorField()
+     * populateAuthorField()
      * for group conversations set the author field
      * @param {Array} conversations array of messages
      * @param {Array} authors array of authors
      * @param {Boolean} force force the autor field to be populated
      */
-    function setAuthorField(conversations, authors, force) {
+    function populateAuthorField(conversations, authors, force) {
         if (authors.length <= 2 && !force) {
             return;
         }

@@ -73,25 +73,17 @@
             <div class="tile is-parent">
                 <div class="tile is-child box">
                     <p class="title">Me</p>
-                    <div class="field">
-                        <label class="label">Name</label>
-                        <div class="control">
-                            <input class="input me" data-key="name" type="text" placeholder="Enter your name as it appears in the log">
-                        </div>
+                    <div class="select">
+                        <select id="authors">
+                            <option>Select Author</option>
+                        </select>
                     </div>
-                    <div class="field">
-                        <label class="label">Number</label>
-                        <div class="control">
-                            <input class="input me" data-key="number" type="text" placeholder="Enter your number incase that is in the log">
-                        </div>
-                    </div>
-                    <button type="button" class="button is-primary clear-me"><span class="typcn typcn-trash">Clear</button>
                 </div>
             </div>
         </div>
 
         <!--Uncomment to see queue and state statistics  -->
-        <div class="box" id="stats"></div>
+        <!-- <div class="box" id="stats"></div> -->
         <div class="" style="display:none;" id="output"></div>
     </section>
 

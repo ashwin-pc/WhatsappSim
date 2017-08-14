@@ -15,6 +15,10 @@ $input.on("change", function () {
             return;
         }
 
+        $("#output").html("");
+        $("#authors").append(WhatsappSim.authors.map(function (x) {
+        return $("<option>" + x + "</option>")
+    }))
         $(".button").prop("disabled", false);
     };
     reader.readAsText(self.files[0]);
@@ -31,6 +35,9 @@ $("textarea").on("change", function () {
     }
 
     $("#output").html("");
+    $("#authors").html("").append(WhatsappSim.authors.map(function (x) {
+        return $("<option>" + x + "</option>")
+    }))
 
     $(".button").prop("disabled", false);
 })
@@ -77,22 +84,10 @@ $(document).ready(function () {
     })
     WhatsappSim.config({me: me})
 })
-$(".input.me").on("change", function () {
+$("#authors").on("change", function () {
+    var author = $(this).val();
 
-    var key = $(this).data("key")
-    var meVal = $(this).val()
-    var me = {}
-    localStorage.setItem(key,meVal)
-
-    me[key] = meVal;
-    WhatsappSim.config({me:me})
-})
-$(".clear-me").on("click", function () {
-    $(".input.me").each(function () {
-        $(this).val("");
-        localStorage.removeItem($(this).data("key"));
-    })
-
+    WhatsappSim.setPrimaryAuthor(author);
 })
 
 function updateStats() {
