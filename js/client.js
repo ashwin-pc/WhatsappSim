@@ -92,6 +92,14 @@ $("#authors").on("change", function () {
     WhatsappSim.setPrimaryAuthor(author);
 })
 
+// Navigation
+$("#hamburger").on("click", function () {
+    $(".pane-one").addClass("open");
+});
+$("#close-menu").on("click", function () {
+    $(".pane-one").removeClass("open");
+});
+
 function updateStats() {
     $('#stats').html(
         "state: " + WhatsappSim.state + "<br>" +

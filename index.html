@@ -8,84 +8,97 @@
     <title>WhatsappSim</title>
 
     <!--Styles  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
     <link rel="stylesheet" href="./dependencies/WhatsappSim/WhatsappSim.css">
     <link rel="stylesheet" href="./dependencies/typicons/typicons.min.css">
 </head>
 
-<body>
+<body class="app two">
 
+    <!--Wallpaper  -->
     <div class="pane-chat-tile"></div>
 
-    <section class="hero is-small is-primary is-bold">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title">
-                    Whatsapp Conversations
-                </h1>
-                <h2 class="subtitle">
-                    Relive those memories
-                </h2>
+    <!--Hamburger  -->
+    <div id="hamburger">
+        <span class="typcn typcn-th-menu"></span>
+    </div>
+
+    <!--Config  -->
+    <div class="pane pane-one">
+
+        <header class="pane-header">
+            <h2 class="pane-title">Menu</h2>
+            <div class="pane-controls">
+                <span class="typcn typcn-info-large"></span>
+                <span class="typcn typcn-times" id="close-menu"></span>
             </div>
+        </header>
+
+        <div class="pane-body">
+
+            <!--Controls  -->
+            <div class="well-simple">
+                <div class="row">
+                    <div class="title">Load file / Paste Chat</div>
+                </div>
+                <div class="row">
+                    <div class="row-body">
+                        <input class="file-input" type="file" name="file">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row-body">
+                        <textarea class="textarea" rows="7" placeholder="e.g. Paste your Whatsapp Chat in Here"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="well">
+                <div class="title">Select Primary Author</div>
+                    <select id="authors">
+                        <option>Select Author</option>
+                    </select>
+            </div>
+
+            <div class="well">
+                <div class="title">Select Replay Format</div>
+                <select data-key="replayType">
+                    <option value="auto">Auto</option>
+                    <option value="random">Random</option>
+                    <option value="time">Time Based</option>
+                    <option value="word" selected>Word Based</option>
+                    <option value="all">All at once</option>
+                </select>
+            </div>
+
+            <!-- <div class="well">
+                <div class="title">Controls</div>
+            </div> -->
         </div>
-    </section>
+    </div>
+
+    <!--Chat  -->
+    <div class="pane pane-two">
+        <div class="pane-body chat" style="display:none;" id="output"></div>
+
+        <!--Controls  -->
+        <div class="compose-filler"></div>
+        <footer class="pane-footer center">
+            <div class="media-btns column">
+                <button type="button" class="button is-primary play" disabled="true"><span class="typcn typcn-media-play"></span></button>
+                <button type="button" class="button is-primary pause" disabled="true"><span class="typcn typcn-media-pause"></button>
+                <button type="button" class="button is-primary stop" disabled="true"><span class="typcn typcn-media-stop"></button>
+                <button type="button" class="button is-primary reset" disabled="true"><span class="typcn typcn-refresh"></button>
+            </div>
+        </footer>
+    </div>
 
     <!--Input/Output section  -->
-    <section class="section">
+    <!-- <section class="section"> -->
 
-        <div class="tile is-ancestor">
-            <div class="tile is-4 is-vertical is-parent">
-                <div class="tile is-child box">
-                    <p class="title">Load file</p>
-                    <input class="file-input" type="file" name="resume">
-                </div>
-                <div class="tile is-child box">
-                    <p class="title">Controls</p>
-                    <div class="columns is-gapless">
-                        <!--Play buttons  -->
-                        <div class="media-btns column">
-                            <button type="button" class="button is-primary play" disabled="true"><span class="typcn typcn-media-play"></span></button>
-                            <button type="button" class="button is-primary pause" disabled="true"><span class="typcn typcn-media-pause"></button>
-                            <button type="button" class="button is-primary stop" disabled="true"><span class="typcn typcn-media-stop"></button>
-                            <button type="button" class="button is-primary reset" disabled="true"><span class="typcn typcn-refresh"></button>
-                        </div>
-                        <!--Options  -->
-                        <div class="options column">
-                            <div class="select">
-                                <select data-key="replayType">
-                                    <option value="auto">Auto</option>
-                                    <option value="random">Random</option>
-                                    <option value="time">Time Based</option>
-                                    <option value="word" selected>Word Based</option>
-                                    <option value="all">All at once</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tile is-parent">
-                <div class="tile is-child box">
-                    <p class="title">Paste Chat</p>
-                    <textarea class="textarea" rows="7" placeholder="e.g. Paste your Whatsapp Chat in Here"></textarea>
-                </div>
-            </div>
-            <div class="tile is-parent">
-                <div class="tile is-child box">
-                    <p class="title">Me</p>
-                    <div class="select">
-                        <select id="authors">
-                            <option>Select Author</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!--Uncomment to see queue and state statistics  -->
         <!-- <div class="box" id="stats"></div> -->
-        <div class="" style="display:none;" id="output"></div>
-    </section>
+    <!-- </section> -->
 
     <!--Scripts  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>

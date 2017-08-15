@@ -1,3 +1,116 @@
+/*Reset Styles  */
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    
+    background-color: #dfdfdf;
+    background-image: linear-gradient(to bottom, #dddbd1, #d2dbdc);
+    font-family: 'Roboto', sans-serif;
+    color: #4b4b4b;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern";
+    -webkit-font-feature-settings: "kern";
+    -moz-font-feature-settings: "kern";
+    -moz-font-feature-settings: "kern=1";
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+body.native.darwin {
+    font-family: system, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Lucida Grande"
+}
+
+html[dir="rtl"] {
+    direction: rtl
+}
+
+em {
+    font-style: italic
+}
+
+code {
+    font-family: Consolas, Menlo, Monaco, "Lucida Console", Liberation Mono,DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", Courier, monospace
+}
+
+input {
+    margin: 0;
+    font-family: 'Roboto', sans-serif
+}
+
+button {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit
+}
+
+button:disabled {
+  opacity: 0.65; 
+  cursor: not-allowed !important;
+}
+
+pre {
+    white-space: pre-wrap
+}
+
+ul,ol {
+    padding: 0;
+    margin: 0
+}
+
+a {
+    text-decoration: none;
+    color: #039be5
+}
+
+textarea {
+    width: 100%;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+textarea:focus, textarea:active {
+    border-color: #148d7f;
+    outline: none;
+}
+
+input[type=file] {
+    border: 1px solid #eaeaea;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+select {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    border: 1px solid #eaeaea;
+    outline: none;
+}
+
+select:focus {
+    border-color: #148d7f;
+}
+
+.center {
+    text-align: center;
+    justify-content: center;
+}
+
+/*Message Styles  */
 .msg {
     padding-left: 9%;
     padding-right: 9%;
@@ -271,5 +384,358 @@
     100% {
         transform: translateY(0px);
         opacity: 1;
+    }
+}
+
+/*Whatsapp panes  */
+@media screen and (max-width: 648px) {
+    .two .pane-one {
+        position: fixed;
+        width: 80%;
+        z-index: 1;
+        transform: translateX(-100%);
+        -webkit-transition: transform 0.5s ease-in-out;
+        -moz-transition: transform 0.5s ease-in-out;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .two .pane-one.open {
+        transform: translateX(0)
+    }
+
+    .two .pane-two {
+        width: 100%
+    }
+}
+
+@media screen and (min-width: 649px) and (max-width: 900px) {
+    .two .pane-one {
+        width:40%
+    }
+
+    .two .pane-two {
+        width: 60%
+    }
+}
+
+@media screen and (min-width: 901px) and (max-width: 1024px) {
+    .two .pane-one {
+        width:35%
+    }
+
+    .two .pane-two {
+        width: 65%
+    }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1300px) {
+    .two .pane-one {
+        width:35%
+    }
+
+    .two .pane-two {
+        width: 65%
+    }
+}
+
+@media screen and (min-width: 1301px) {
+    .two .pane-one {
+        width:30%
+    }
+
+    .two .pane-two {
+        width: 70%
+    }
+}
+
+
+@media screen and (max-width: 900px) {
+    .three .pane-one {
+        width:40%
+    }
+
+    .three .pane-two {
+        width: 60%
+    }
+
+    .three .pane-three {
+        position: absolute;
+        left: 40%;
+        width: 60%
+    }
+}
+
+@media screen and (min-width: 901px) and (max-width: 1024px) {
+    .three .pane-one {
+        width:35%
+    }
+
+    .three .pane-two {
+        width: 65%
+    }
+
+    .three .pane-three {
+        position: absolute;
+        left: 35%;
+        width: 65%
+    }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1300px) {
+    .three .pane-one {
+        width:30%
+    }
+
+    .three .pane-two {
+        width: 40%
+    }
+
+    .three .pane-three {
+        width: 30%
+    }
+}
+
+@media screen and (min-width: 1301px) {
+    .three .pane-one {
+        width:25%
+    }
+
+    .three .pane-two {
+        width: 45%
+    }
+
+    .three .pane-three {
+        width: 30%
+    }
+}
+
+.pane {
+    height: 100vh;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative
+}
+
+.pane-header {
+    -webkit-flex: none;
+    flex: none;
+    height: 59px;
+    width: 100%;
+    background-color: #eee;
+    box-sizing: border-box;
+    padding: 10px 15px 10px 16px;
+    position: relative;
+    z-index: 1000;
+}
+
+.pane-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 21px;
+    color: #000;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    display: -webkit-flex;
+    display: flex;
+    flex: 1;
+}
+
+.pane-controls {
+    -webkit-flex: none;
+    flex: none;
+    font-size: 24px;
+    color: #777777;
+}
+
+.pane-controls .typcn {
+    padding: 8px;
+}
+
+.pane-body {
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    z-index: 1;
+
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    pointer-events: auto;
+
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.chat.pane-body {
+    z-index: 100;
+    box-sizing: border-box;
+    border-left: 1px solid rgba(0,0,0,0.03);
+    transition: background .3s ease-out .1s;
+    background-color: transparent;
+    padding: 20px 0;
+}
+
+.compose-filler {
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+    -webkit-order: 2;
+    order: 2;
+}
+
+.pane-footer {
+    padding: 0;
+    background-color: rgba(255,255,255,0.6);
+    box-sizing: border-box;
+    border-left: 1px solid rgba(0,0,0,0.08);
+    min-height: 62px;
+    -webkit-order: 3;
+    order: 3;
+    position: relative;
+}
+
+.pane-footer .media-btns button {
+    height: 40px;
+    width: 40px;
+    background: white;
+    border-radius: 50%;
+    font-size: 21px;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+    margin: 0 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+    color: #525150;
+}
+
+/*Wells  */
+.well, .well-simple {
+    background-color: #FFF;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    margin-top: 10px;
+}
+.well {
+    padding-top: 14px;
+    padding-bottom: 19px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.well-simple .row {
+    padding-left: 30px;
+}
+
+.row-body {
+    border-bottom: 1px solid #f2f2f2;
+    padding-right: 30px;
+    padding-top: 19px;
+    padding-bottom: 19px;
+}
+
+.well .title, .row .title  {
+    -webkit-flex: none;
+    flex: none;
+    font-size: 14px;
+    line-height: normal;
+    color: #128C7E;
+    font-weight: 300;
+    padding-right: 30px;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+}
+
+.row .title {
+    padding-top: 14px;
+}
+
+
+
+/*Align anything vertically in the center  */
+.pane-header, .pane-footer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+/*Pane management  */
+.app {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    top: 0;
+    position: relative;
+    overflow: hidden;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    -webkit-animation: app-enter 0.3s cubic-bezier(0.1, 0.82, 0.25, 1);
+    animation: app-enter 0.3s cubic-bezier(0.1, 0.82, 0.25, 1);
+    background-position: top left;
+    background-repeat: repeat-x;
+    background-color: #f7f7f7;
+    display: -webkit-flex;
+    display: flex;
+}
+
+@-webkit-keyframes app-enter {
+    from {
+        -webkit-transform: scale(1.4);
+        transform: scale(1.4);
+        opacity: 0
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1
+    }
+}
+
+@keyframes app-enter {
+    from {
+        -webkit-transform: scale(1.4);
+        transform: scale(1.4);
+        opacity: 0
+    }
+
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1
+    }
+}
+
+/*Side menu styles  */
+#hamburger, #close-menu {
+    display: none;
+}
+
+@media screen and (max-width: 648px) {
+    #close-menu {
+        display: inline-block;
+    }
+    #hamburger {
+        display: block;
+        position: fixed;
+        padding: 8px;
+        font-size: 24px;
+        z-index: 1;
     }
 }
