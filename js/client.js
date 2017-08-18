@@ -115,13 +115,32 @@ function updateStats() {
 
         updateStats();
 
-        document.body.scrollTop = document.body.scrollHeight;
+        $("#output")[0].scrollTop = $("#output")[0].scrollHeight;
     }
 
     WhatsappSim.onComplete = function () {
         updateStats();
     }
+
+    $(document).ready(function () {
+        WhatsappSim.parse(defaultConvos[0])
+        WhatsappSim.setPrimaryAuthor("Ashwin")
+        WhatsappSim.startSimulation()
+    })
 })();
+
+var defaultConvos = [
+    '21/11/14, 8:16 PM - Ashwin created group "Whatsapp Simulator"\n\
+02/12/14, 7:08 PM - Siri: Hey! Whats this?!\n\
+02/12/14, 7:08 PM - Ashwin: Hi There!\n\
+02/12/14, 7:08 PM - Ashwin: Want to re-live some of those old conversations?\n\
+02/12/14, 7:09 PM - John: Yeah, its pretty simple too!\n\
+02/12/14, 7:10 PM - Siri: How!!?\n\
+02/12/14, 7:11 PM - Ashwin: Just paste your chat in the menu\n\
+02/12/14, 7:11 PM - Ashwin: Select who you are\n\
+02/12/14, 7:11 PM - Ashwin: and hit play!\n\
+02/12/14, 7:13 PM - Siri: 😱😱😱'
+]
 
 /**
  * TODO
