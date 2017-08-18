@@ -75,6 +75,9 @@
         // Clear previous authors list
         self.authors = [];
 
+        // Stop the simulation and reset anything running from the previous simulation
+        self.stopSimulation()
+
         // Construct Parsed Object
         txtArr.forEach(function (line) {
             var testType = type.testRegex.test(line);
@@ -511,6 +514,7 @@
 
             case "stopped":
                 self.queue.length = 0;
+                clearTimeout(self.timeoutInstance);
                 break;
 
             case "paused":
