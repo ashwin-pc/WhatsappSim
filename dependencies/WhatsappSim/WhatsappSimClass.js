@@ -147,7 +147,7 @@
                         exists = true
                     }
                 }, this);
-                if (!exists) {
+                if (!exists && !txtOb.system) {
                     self.authors.push(txtOb.name)
                 }
 
