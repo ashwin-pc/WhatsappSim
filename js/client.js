@@ -140,7 +140,7 @@ var defaultConvos = [
 02/12/14, 7:11 PM - Ashwin: Select who you are\n\
 02/12/14, 7:11 PM - Ashwin: and hit play!\n\
 02/12/14, 7:13 PM - Siri: 😱😱😱'
-]
+];
 
 /**
  * TODO
