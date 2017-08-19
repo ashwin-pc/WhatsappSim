@@ -19,8 +19,8 @@
         this.authors = [];
 
         // User set functions
-        this.onMessage = function() {}
-        this.onComplete = function() {}
+        this.onMessage = function () { }
+        this.onComplete = function () { }
 
         // Types of formats
         this.types = [
@@ -41,6 +41,10 @@
             }, {
                 name: "emailOld",
                 testRegex: /^\d{1,2}\/\d{1,2}\/\d{2},\s\d{1,2}:\d{2}\s[AP]M/,
+                splitRegx: /(\s-\s|\:\s)/
+            }, {
+                name: "copyIPhone",
+                testRegex: /^\d{2}\/\d{2}\/\d{2},\s\d{2}:\d{2}:\d{2}/,
                 splitRegx: /(\s-\s|\:\s)/
             }
         ]
@@ -303,7 +307,7 @@
         } else if (typeof primaryAuthor == "number") {
             index = primaryAuthor;
         }
-        
+
         if (index < 0) {
             return {
                 status: false,
@@ -312,13 +316,13 @@
         }
 
         // Set self value for conversation and queue
-        self.conversation.forEach(function(msg) {
+        self.conversation.forEach(function (msg) {
             delete msg.self;
             if (msg.name == self.authors[index]) {
                 msg.self = true;
             }
         }, this);
-        self.queue.forEach(function(msg) {
+        self.queue.forEach(function (msg) {
             delete msg.self;
             if (msg.name == self.authors[index]) {
                 msg.self = true;
@@ -354,8 +358,14 @@
      */
     function setTimestamp(msg, prevMsgArray) {
         // Extract the time field from the message
-        var timeRegex = /\d{1,2}:\d{2}\s[AP]M/g;
-        msg.timestamp = timeRegex.exec(msg.date);
+        var timeRegex = /(\d{1,2}:\d{2}\s[AP]M|\d{2}:\d{2}:\d{2})/g;
+        var ampmTestRegex = /[AP]M/g
+        msg.timestamp = timeRegex.exec(msg.date)[0];
+
+        // If Timestamp does not have the AM PM format
+        if (!ampmTestRegex.test(msg.timestamp)) {
+            msg.timestamp = formatAMPM(new Date("1/1/2000 " + msg.timestamp))
+        }
 
         // Find time difference between the messages and set the time factor
         // The time factor will be a value between 500 - 1000 for messages within 4 mins
@@ -391,6 +401,21 @@
             }
         }
 
+    }
+
+    /**
+     * formatAMPM
+     * convert date object to AM PM Mode
+     */
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
     }
 
     /**
