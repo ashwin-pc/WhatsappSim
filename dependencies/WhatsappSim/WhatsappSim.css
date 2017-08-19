@@ -665,6 +665,14 @@ select:focus {
     padding-top: 14px;
 }
 
+.well button, .well-simple button {
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px;
+    background: linear-gradient(#138c7f, #0f756a);
+    color: white;
+}
+
 
 
 /*Align anything vertically in the center  */

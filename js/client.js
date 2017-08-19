@@ -100,6 +100,10 @@ $("#close-menu").on("click", function () {
     $(".pane-one").removeClass("open");
 });
 
+$(".start-btn").on("click", function () {
+    $(".pane-one").removeClass("open");
+})
+
 function updateStats() {
     $('#stats').html(
         "state: " + WhatsappSim.state + "<br>" +
