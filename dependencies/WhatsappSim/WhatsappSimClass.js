@@ -46,6 +46,10 @@
                 name: "copyIPhone",
                 testRegex: /^\d{2}\/\d{2}\/\d{2},\s\d{2}:\d{2}:\d{2}/,
                 splitRegx: /(\s-\s|\:\s)/
+            }, {
+                name: "emailIphone",
+                testRegex: /^\d{2}\/\d{2}\/\d{2},\s\d{2}:\d{2}:\d{2}\s[AP]M/,
+                splitRegx: /(\s-\s|\:\s)/
             }
         ]
     }
@@ -358,12 +362,12 @@
      */
     function setTimestamp(msg, prevMsgArray) {
         // Extract the time field from the message
-        var timeRegex = /(\d{1,2}:\d{2}\s[AP]M|\d{2}:\d{2}:\d{2})/g;
-        var ampmTestRegex = /[AP]M/g
+        var timeRegex = /(\d{1,2}:\d{2}\s[AP]M|\d{2}:\d{2}:\d{2}\s?[AP]?M?)/g;
+        var iphoneTimeTest = /\d{2}:\d{2}:\d{2}/g
         msg.timestamp = timeRegex.exec(msg.date)[0];
 
         // If Timestamp does not have the AM PM format
-        if (!ampmTestRegex.test(msg.timestamp)) {
+        if (iphoneTimeTest.test(msg.timestamp)) {
             msg.timestamp = formatAMPM(new Date("1/1/2000 " + msg.timestamp))
         }
 
