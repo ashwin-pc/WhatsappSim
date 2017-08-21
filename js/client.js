@@ -144,6 +144,9 @@ function updateStats() {
             {
                 question: "Does not match a known format?",
                 answer: 0
+            }, {
+                question: "Replay Formats?",
+                answer: 1
             }
         ]
 
@@ -191,7 +194,15 @@ function updateStats() {
 02/12/14, 7:09 PM - John: Yeah, it turns out Whatsapp has a different format for almost every device!!\n\
 02/12/14, 7:10 PM - Siri: Thats Awful!!?\n\
 02/12/14, 7:11 PM - Ashwin: Thats just how it is, but hey! just send us something that can help us understand the format used and we will add it 😁\n\
-02/12/14, 7:11 PM - Ashwin: Just send a small snippet to reachme@designedbyashw.in'
+02/12/14, 7:11 PM - Ashwin: Just send a small snippet to reachme@designedbyashw.in',
+
+        '02/12/14, 7:08 PM - Siri: What are the different Replay Formats?!\n\
+02/12/14, 7:08 PM - Ashwin: Oh thats just to control at what speed you see your messages\n\
+02/12/14, 7:08 PM - Ashwin: Auto - Plays each message at a constant interval\n\n\
+Random - As the name suggests plays each message at a random interval\n\n\
+Time Based - This looks at the time the message was sent and tries to replicate its effect, sped up at different rates depending in the difference (Trust me, you do not want to wait a day for the message)\n\n\
+Word Based - The size of the message determines the interval (Longer messages stay on for longer). Best for reading the conversation without pausing\n\n\
+All At Once - Well some of just cant wait, so show ALL AT ONCE!'
     ]
 })(window)
 
@@ -210,7 +221,7 @@ var defaultConvos = [
 
 /**
  * TODO
- * 
+ * - Add Typing..
  * - Add Readme
  * - add setters for all configurations
  */
