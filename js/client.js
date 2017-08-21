@@ -84,7 +84,7 @@ $(document).ready(function () {
             me[key] = meVal;
         }
     })
-    WhatsappSim.config({me: me})
+    WhatsappSim.config({ me: me })
 })
 $("#authors").on("change", function () {
     var author = $(this).val();
@@ -132,6 +132,68 @@ function updateStats() {
         WhatsappSim.startSimulation()
     })
 })();
+
+/**
+ * Faq Controller
+ */
+(function (window) {
+    function FAQController() {
+        var self = this
+
+        self.faqs = [
+            {
+                question: "Does not match a known format?",
+                answer: 0
+            }
+        ]
+
+        self.init();
+    }
+
+    // Initialize
+    FAQController.prototype.init = function () {
+        var self = this;
+
+        $("#faqs").append(self.faqs.map(function (q) {
+            return $("<option value='" + q.answer + "'>" + q.question + "</option>")
+        })).on("change", function () {
+            self.showFaq($(this).val())
+        })
+    }
+
+    // Show an FAQ
+    FAQController.prototype.showFaq = function (index) {
+        var self = this;
+
+        $("#output").html("");
+        WhatsappSim.parse(faqConvos[index])
+        WhatsappSim.setPrimaryAuthor("Ashwin")
+        WhatsappSim.startSimulation()
+    }
+
+
+    /**
+     * Initialize the Library
+     * define globally if it doesn't already exist
+     */
+    if (typeof (faq) === 'undefined') {
+        window.faq = new FAQController();
+    }
+    else {
+        console.log("FAQ Library already defined.");
+    }
+
+    // Keeping the conversations separate to not clutter up the code
+    var faqConvos = [
+        '02/12/14, 7:08 PM - Siri: Hey! Whats Does not match a known format?!\n\
+02/12/14, 7:08 PM - Ashwin: Oh im so sorry 😥!\n\
+02/12/14, 7:08 PM - Ashwin: Yes your format isnt supported yet, \nbut just mail us a sample of your chat text so that we can support it too!\n\
+02/12/14, 7:09 PM - John: Yeah, it turns out Whatsapp has a different format for almost every device!!\n\
+02/12/14, 7:10 PM - Siri: Thats Awful!!?\n\
+02/12/14, 7:11 PM - Ashwin: Thats just how it is, but hey! just send us something that can help us understand the format used and we will add it 😁\n\
+02/12/14, 7:11 PM - Ashwin: Just send a small snippet to reachme@designedbyashw.in'
+    ]
+})(window)
 
 var defaultConvos = [
     '21/11/14, 8:16 PM - Ashwin created group "Whatsapp Simulator"\n\
