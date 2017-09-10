@@ -172,6 +172,7 @@ function updateStats() {
         WhatsappSim.parse(faqConvos[index])
         WhatsappSim.setPrimaryAuthor("Ashwin")
         WhatsappSim.startSimulation()
+        $("#close-menu").click()
     }
 
 
