@@ -10,7 +10,7 @@
     function WhatsappSimClass() {
         // Defaults
         this.replayInterval = 1000;
-        this.replayType = 'word';
+        this.replayType = 'all';
         this.replayScalingFactor = 1;
         this.state = "paused";
         this.queue = [];
