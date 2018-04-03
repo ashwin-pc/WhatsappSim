@@ -1,0 +1,22 @@
+QUESTION: Does not match a known format?
+02/12/14, 7:08 PM - Siri: Hey! Whats Does not match a known format?!
+02/12/14, 7:08 PM - Ashwin: Oh im so sorry 😥!
+02/12/14, 7:08 PM - Ashwin: Yes your format isnt supported yet, 
+but just mail us a sample of your chat text so that we can support it too!
+02/12/14, 7:09 PM - John: Yeah, it turns out Whatsapp has a different format for almost every device!!
+02/12/14, 7:10 PM - Siri: Thats Awful!!?
+02/12/14, 7:11 PM - Ashwin: Thats just how it is, but hey! just send us something that can help us understand the format used and we will add it
+02/12/14, 7:11 PM - Ashwin: Just send a small snippet to reachme@designedbyashw.in
+=====FAQ=====
+QUESTION: Replay Formats?
+02/12/14, 7:08 PM - Siri: What are the different Replay Formats?!
+02/12/14, 7:08 PM - Ashwin: Oh thats just to control at what speed you see your messages
+02/12/14, 7:08 PM - Ashwin: Auto - Plays each message at a constant interval
+
+Random - As the name suggests plays each message at a random interval
+
+Time Based - This looks at the time the message was sent and tries to replicate its effect, sped up at different rates depending in the difference (Trust me, you do not want to wait a day for the message)
+
+Word Based - The size of the message determines the interval (Longer messages stay on for longer). Best for reading the conversation without pausing
+
+All At Once - Well some of just cant wait, so show ALL AT ONCE!
