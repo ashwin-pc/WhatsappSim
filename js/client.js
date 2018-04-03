@@ -24,6 +24,9 @@
             success: function (data) {
                 WhatsappSim.parse(data)
                 WhatsappSim.setPrimaryAuthor("Ashwin")
+                WhatsappSim.config({
+                    replayType: "word"
+                })
                 WhatsappSim.startSimulation()
             }
         })
@@ -54,7 +57,6 @@ $input.on("change", function () {
         $("#authors").append(WhatsappSim.authors.map(function (x) {
             return $("<option>" + x + "</option>")
         }))
-        WhatsappSim.setPrimaryAuthor(WhatsappSim.authors[0]) // Set first detected author as primary author
 
         $(".button").prop("disabled", false);
     };
@@ -76,7 +78,6 @@ $("textarea").on("change", function () {
     $("#authors").append(WhatsappSim.authors.map(function (x) {
         return $("<option>" + x + "</option>")
     }))
-    WhatsappSim.setPrimaryAuthor(WhatsappSim.authors[0]) // Set first detected author as primary author
 
     $(".button").prop("disabled", false);
 })
@@ -86,6 +87,7 @@ $("textarea").on("change", function () {
  * Setup the play, pause, stop and reset buttons
  */
 $(".play").on("click", function () {
+    setParams();
     WhatsappSim.startSimulation()
     updateStats();
 })
@@ -100,30 +102,9 @@ $(".stop").on("click", function () {
 })
 $(".reset").on("click", function () {
     $("#output").html("");
+    setParams();
     WhatsappSim.resetSimulation()
     updateStats();
-})
-
-/**
- * Change simulator configs from select boxes
- * Currently only used for replayType
- */
-$("select").on("change", function () {
-    var $select = $(this);
-    var key = $select.data("key")
-    var configOb = {}
-
-    configOb[key] = $select.val();
-    WhatsappSim.config(configOb)
-})
-
-/**
- * Set the primary author of the simulator
- */
-$("#authors").on("change", function () {
-    var author = $(this).val();
-
-    WhatsappSim.setPrimaryAuthor(author);
 })
 
 /**
@@ -148,6 +129,24 @@ function updateStats() {
         "state: " + WhatsappSim.state + "<br>" +
         "queue.length: " + WhatsappSim.queue.length + "<br>"
     );
+}
+
+/**
+ * Set Playback parameters
+ */
+function setParams() {
+    // Set the primary author
+    WhatsappSim.setPrimaryAuthor($("#authors").val());
+
+    // Set Config parameters
+    $("select").each(function () {
+        var $select = $(this);
+        var key = $select.data("key")
+        var configOb = {}
+    
+        configOb[key] = $select.val();
+        WhatsappSim.config(configOb); 
+    });
 }
 
 
@@ -193,6 +192,7 @@ function updateStats() {
         $("#output").html("");
         WhatsappSim.parse(self.faqs[index].answer)
         WhatsappSim.setPrimaryAuthor("Ashwin")
+        WhatsappSim.config({replayType: "all"})
         WhatsappSim.startSimulation()
         $("#close-menu").click()
     }
@@ -213,7 +213,6 @@ function updateStats() {
 
 /**
  * TODO
- * - Add Typing..
+ * - Fix Update stats
  * - Add Readme
- * - add setters for all configurations
  */
