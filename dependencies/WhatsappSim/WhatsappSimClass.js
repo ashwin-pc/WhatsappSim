@@ -25,41 +25,14 @@
         // Types of formats
         this.types = [
             {
-                name: "email",
-                testRegex: /^\d{1,2}\/\d{1,2}\/\d{2,4},\s\d{1,2}:\d{2}\s[AP]M/,
-                splitRegx: /(\s-\s|\:\s)/
-            }, {
-                name: "copyWeb",
-                testRegex: /^\[\d{1,2}:\d{2}\s[AP]M,\s\d{1,2}\/\d{1,2}\/20\d{2}\]/,
+                name: "allBrackets",
+                testRegex: /^\[\d{1,2}(:|\/).+\]/,
                 splitRegx: /(\]\s|\:\s)/,
                 hasBracket: true
             }, {
-                name: "copyPhone",
-                testRegex: /^\[\d{2}\/\d{2},\s\d{1,2}:\d{2}\s[AP]M\]/,
-                splitRegx: /(\]\s|\:\s)/,
-                hasBracket: true
-            }, {
-                name: "emailOld",
-                testRegex: /^\d{1,2}\/\d{1,2}\/\d{2},\s\d{1,2}:\d{2}\s[AP]M/,
-                splitRegx: /(\s-\s|\:\s)/
-            }, {
-                name: "copyIPhone",
-                testRegex: /^\d{2}\/\d{2}\/\d{2},\s\d{2}:\d{2}:\d{2}/,
-                splitRegx: /(\s-\s|\:\s)/
-            }, {
-                name: "emailIphone",
-                testRegex: /^\d{2}\/\d{2}\/\d{2},\s\d{1,2}:\d{2}:\d{2}\s[AP]M/,
-                splitRegx: /(\s-\s|\:\s)/
-            }, {
-                name: "anotherAndroid",
-                testRegex: /^\[\d{2}\/\d{2}\,\s\d{1,2}:\d{2}\]/,
-                splitRegx: /(\]\s|\:\s)/,
-                hasBracket: true
-            }, {
-                name: "webNew",
-                testRegex: /^\[\d{2}\/\d{2},\s\d{1,2}:\d{2}\]/,
-                splitRegx: /(\]\s|\:\s)/,
-                hasBracket: true
+                name: "allDateFirst",
+                testRegex: /^\d{1,2}\/\d{1,2}.+[AP]?M?(?=(: | -))/,
+                splitRegx: /(\]\s|\:\s|\s-\s)/
             }
         ]
     }
