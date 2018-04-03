@@ -180,7 +180,10 @@ function setParams() {
                 })).on("change", function () {
                     self.showFaq($(this).val())
                 })
-            } 
+            },
+            error: function functionName() {
+                $("#faqs").append($("<option'>Could not load FAQ's</option>"))
+            }
         });
 
     }
