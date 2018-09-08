@@ -1,10 +1,12 @@
 # Whatsapp Simulator
 
-> A parsing and simulation engine for whatsapp chats.
+> A parsing and simulation engine for whatsapp chats, completely clientside (nothing is sent to a server).
 
 Whatsapp for the longest time allows you to copy paste chat in a purely textual form. We can save these chats for reference in the future, but we could never load that chat back to re visualize the conversation again. This simulation engine is built to be able to parse the plain textual form of a whatsapp chat automatically into discernable chat objects using vanilla javascript and the using its simulation engine and style sheets, resimulate the chat experience.
 
-The engine can be used partially or completely and has no external dependency (Except typicons for the demo page). 
+The engine can be used partially or completely and has no external dependency (Except typicons for the demo page).
+
+[Demo Site](https://designedbyashw.in/test/wsim/)
 
 ## Table of Contents
 
