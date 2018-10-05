@@ -611,20 +611,42 @@ select:focus {
     position: relative;
 }
 
-.pane-footer .media-btns button {
+.pane-footer .media-btns button,
+.pane-footer .aux-btns button {
     height: 40px;
     width: 40px;
-    background: white;
-    border-radius: 50%;
     font-size: 21px;
     outline: none;
     cursor: pointer;
     font-family: inherit;
     margin: 0 10px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
     color: #525150;
 }
 
+.pane-footer .media-btns button.is-primary {
+    background: white;
+    border-radius: 50%;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.pane-footer .aux-btns button {
+    background: #2196F3;
+    border-radius: 50%;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+    color: #ffffff;
+}
+
+.pane-footer button .typcn {
+    position: relative;
+}
+
+.pane-footer button .typcn.left {
+    left: 1px;
+}
+
+.pane-footer button .typcn.top {
+    top: -1px;
+}
 /*Wells  */
 .well, .well-simple {
     background-color: #FFF;

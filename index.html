@@ -9,6 +9,7 @@
 
     <!--Styles  -->
     <link rel="stylesheet" href="./dependencies/WhatsappSim/WhatsappSim.css">
+    <link rel="stylesheet" href="./dependencies/toast/toast.css">
     <link rel="stylesheet" href="./dependencies/typicons/typicons.min.css">
 </head>
 
@@ -114,16 +115,20 @@
         <div class="compose-filler"></div>
         <footer class="pane-footer center">
             <div class="media-btns column">
-                <button type="button" class="button is-primary play" disabled="true"><span class="typcn typcn-media-play"></span></button>
-                <button type="button" class="button is-primary pause" disabled="true"><span class="typcn typcn-media-pause"></button>
-                <button type="button" class="button is-primary stop" disabled="true"><span class="typcn typcn-media-stop"></button>
-                <button type="button" class="button is-primary reset" disabled="true"><span class="typcn typcn-refresh"></button>
+                <button type="button" class="button is-primary play" disabled="true"><span class="typcn typcn-media-play left top"></span></button>
+                <button type="button" class="button is-primary pause" disabled="true"><span class="typcn typcn-media-pause top"></button>
+                <button type="button" class="button is-primary stop" disabled="true"><span class="typcn typcn-media-stop top"></button>
+                <button type="button" class="button is-primary reset" disabled="true"><span class="typcn typcn-refresh left top"></button>
+            </div>
+            <div class="aux-btns column">
+                <button type="button" class="button share right" disabled="true"><span class="typcn typcn-export left top"></button>
             </div>
         </footer>
     </div>
 
     <!--Scripts  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+    <script src="./dependencies/toast/toast.js?v=1"></script>
     <script src="./dependencies/WhatsappSim/WhatsappSimClass.js?v=1"></script>
     <script src="./js/client.js?v=1"></script>
     <script src="./js/analytics.js"></script>
