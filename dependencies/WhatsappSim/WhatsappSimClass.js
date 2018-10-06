@@ -37,6 +37,17 @@
         ]
     }
 
+    WhatsappSimClass.prototype.loadInstance = function loadInstance(wsimObject) {
+        self.replayInterval = wsimObject.replayInterval;
+        self.replayType = wsimObject.replayType;
+        self.replayScalingFactor = wsimObject.replayScalingFactor;
+        self.state = wsimObject.state;
+        self.queue = wsimObject.queue;
+        self.conversation = wsimObject.conversation;
+        self.me = wsimObject.me;
+        self.authors = wsimObject.authors;
+    }
+
     /**
      * parse()
      * The function to parse the whatsapp text and return an conversation object
@@ -285,8 +296,7 @@
      */
     WhatsappSimClass.prototype.setPrimaryAuthor = function setPrimaryAuthor(primaryAuthor) {
         var self = this;
-        var status = true;
-        var msg, index = -2;
+        var index = -2;
 
         // set index based on name or index
         if (typeof primaryAuthor == "string") {
@@ -301,6 +311,9 @@
                 err: "inncorrect type or author not found"
             }
         }
+
+        // Set primary author field in the class
+        self.primaryAuthor = primaryAuthor;
 
         // Set self value for conversation and queue
         self.conversation.forEach(function (msg) {

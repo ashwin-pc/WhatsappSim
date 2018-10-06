@@ -18,20 +18,45 @@
 
     $(document).ready(function () {
 
-        // Load the default startup conversation
-        $.ajax({
-            url: "./data/default.txt",
-            success: function (data) {
-                WhatsappSim.parse(data)
-                WhatsappSim.setPrimaryAuthor("Ashwin")
-                WhatsappSim.config({
-                    replayType: "word"
-                })
-                WhatsappSim.startSimulation()
-            }
-        })
+        if (location.hash !== "") {
+            var url = "./api.php/records/conversations?filter=hashid,eq," + location.hash.slice(1);
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    if(!data.records.length) {
+                        return loadDefaultData();
+                    }
+                    
+                    var wsimParams = JSON.parse(decodeURI(data.records[0].params));
+                    WhatsappSim.loadInstance(wsimParams);
+                    WhatsappSim.authors = JSON.parse(decodeURI(data.records[0].authors));
+                    WhatsappSim.conversation = JSON.parse(decodeURI(data.records[0].conversation));
+                    WhatsappSim.resetSimulation();
+
+                    initInputs();
+                    $(".button").prop("disabled", false);
+                }
+            });
+        } else {
+            loadDefaultData();
+        }
     })
 })();
+
+function loadDefaultData() {
+    // Load the default startup conversation
+    $.ajax({
+        url: "./data/default.txt",
+        success: function (data) {
+            WhatsappSim.parse(data)
+            WhatsappSim.setPrimaryAuthor("Ashwin")
+            WhatsappSim.config({
+                replayType: "word"
+            })
+            WhatsappSim.startSimulation()
+        }
+    })
+}
 
 
 /**
@@ -52,12 +77,7 @@ $input.on("change", function () {
             return;
         }
 
-        $("#output").html("");
-        $("#authors").find('option').remove();
-        $("#authors").append(WhatsappSim.authors.map(function (x) {
-            return $("<option>" + x + "</option>")
-        }))
-
+        initInputs();
         $(".button").prop("disabled", false);
     };
     reader.readAsText(self.files[0]);
@@ -73,12 +93,7 @@ $("textarea").on("change", function () {
         return;
     }
 
-    $("#output").html("");
-    $("#authors").find('option').remove();
-    $("#authors").append(WhatsappSim.authors.map(function (x) {
-        return $("<option>" + x + "</option>")
-    }))
-
+    initInputs();
     $(".button").prop("disabled", false);
 })
 
@@ -107,6 +122,24 @@ $(".reset").on("click", function () {
     updateStats();
 })
 
+$(".share").on("click", function () {
+    var hashid = (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase()
+    $.ajax({
+        url: "./api.php/records/conversations",
+        type: "POST",
+        data: {
+            hashid: hashid,
+            params: encodeURI(JSON.stringify(WhatsappSim)),
+            conversation: encodeURI(JSON.stringify(WhatsappSim.conversation)),
+            authors: encodeURI(JSON.stringify(WhatsappSim.authors))
+        },
+        success: function(data) {
+            var msg = location.origin + location.pathname + "#" + hashid;
+            toast(msg + "     <span style='color:grey'>Click to Copy</span>", {timeout: 20000, click: copyToClipboard.bind(this,msg)});
+        }
+    })
+})
+
 /**
  * Hamburger menu setup
  */
@@ -132,6 +165,17 @@ function updateStats() {
 }
 
 /**
+ * 
+ */
+function initInputs() {
+    $("#output").html("");
+    $("#authors").find('option').remove();
+    $("#authors").append(WhatsappSim.authors.map(function (x) {
+        return $("<option>" + x + "</option>")
+    }))
+}
+
+/**
  * Set Playback parameters
  */
 function setParams() {
@@ -149,6 +193,20 @@ function setParams() {
     });
 }
 
+/**
+ * Copy to clipboard
+ */
+function copyToClipboard(str) {
+    var el = document.createElement('input');
+    el.value = str;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    setTimeout(function (){
+        toast("Copied");
+    }, 201);
+};
 
 /**
  * FAQ Controller
