@@ -39,6 +39,7 @@
      */
     ToastContainer.prototype.toast = function (msg, options, callback) {
         var self = this;
+        var toastInstance = {};
 
         // Options
         var opt = options || {}
@@ -49,7 +50,6 @@
         var g = opt.gravity || this.gravity;
         var log = opt.logging || this.logging;
         var click = opt.click || null;
-        var dismissEvent;
 
         // Create HTML
         var containerEle = self.containerEle = (g === "top") ? this.topToastContainerEle : this.bottomToastContainerEle;
@@ -58,6 +58,7 @@
         toastEle.innerHTML = m;
         toastEle.classList.add(g);
         containerEle.appendChild(toastEle);
+        toastInstance.msg = m;
 
         // Slide in toast
         setTimeout(function () {
@@ -75,7 +76,7 @@
         // Remove from DOM
         self.removeTimeout = setTimeout(function () {
             containerEle.removeChild(toastEle);
-            document.removeEventListener("keydown", keystroke);
+            removeEvents(toastInstance);
         }, t + 700);
 
         // Log Error
@@ -86,34 +87,37 @@
         // Dismiss toast
         if (d) {
             // For keypress
-            dismissEvent = function (e) {
+            toastInstance.keyDownEvent = function (e) {
                 var hasValidKey = ["Escape"].filter(function (key) {
                     return key == e.code;
                 }).length
 
                 if (hasValidKey) {
-                    self.removeToast(dismissEvent);
+                    self.removeToast(toastInstance);
                 }
             }
 
-            document.addEventListener("keydown", dismissEvent);
+            document.addEventListener("keydown", toastInstance.keyDownEvent);
 
             // For mouseclick
-            dismissEvent = function () {
-                self.removeToast(dismissEvent);
+            toastInstance.mouseEvent = function () {
+                self.removeToast(toastInstance);
             }
-            toastEle.addEventListener("click", dismissEvent)
+            toastEle.addEventListener("click", toastInstance.mouseEvent);
         }
 
         // Copy toast text
         if (click) {
             toastEle.addEventListener("click", function mouseclick() {
                 click(m);
+                toastEle.removeEventListener("click", mouseclick);
             })
         }
 
         if (callback) {
             return callback(null, m);
+        } else {
+            return 
         }
     }
 
@@ -121,14 +125,19 @@
      * remove toast when dismissed
      * @param {Function} dismissEvent event handler function to remove for action
      */
-    ToastContainer.prototype.removeToast = function (dismissEvent) {
+    ToastContainer.prototype.removeToast = function (toastInstance) {
         var self = this;
         clearTimeout(self.removeTimeout);
         self.toastEle.classList.remove("show");
+        removeEvents(toastInstance)
         setTimeout(function () {
             self.containerEle.removeChild(self.toastEle);
-            document.removeEventListener("keydown", dismissEvent)
         }, 200);
+    }
+
+    function removeEvents(toastInstance) {
+        document.removeEventListener("keydown", toastInstance.keyDownEvent);
+        document.removeEventListener("click", toastInstance.mouseEvent);
     }
 
     /**

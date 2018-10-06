@@ -134,7 +134,8 @@ $(".share").on("click", function () {
             authors: encodeURI(JSON.stringify(WhatsappSim.authors))
         },
         success: function(data) {
-            toast(location.href + "#" + hashid + "     <span style='color:grey'>Click to Copy</span>", {timeout: 20000, click: copyToClipboard});
+            var msg = location.origin + location.pathname + "#" + hashid;
+            toast(msg + "     <span style='color:grey'>Click to Copy</span>", {timeout: 20000, click: copyToClipboard.bind(this,msg)});
         }
     })
 })
