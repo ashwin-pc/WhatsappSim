@@ -19,7 +19,7 @@
     $(document).ready(function () {
 
         if (location.hash !== "") {
-            var url = "/api.php/records/conversations?filter=hashid,eq," + location.hash.slice(1);
+            var url = "./api.php/records/conversations?filter=hashid,eq," + location.hash.slice(1);
             $.ajax({
                 url: url,
                 success: function (data) {
@@ -125,7 +125,7 @@ $(".reset").on("click", function () {
 $(".share").on("click", function () {
     var hashid = (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase()
     $.ajax({
-        url: "/api.php/records/conversations",
+        url: "./api.php/records/conversations",
         type: "POST",
         data: {
             hashid: hashid,
