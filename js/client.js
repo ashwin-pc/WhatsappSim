@@ -123,6 +123,25 @@ $(".reset").on("click", function () {
 })
 
 $(".share").on("click", function () {
+    shareChat(function(hashid) {
+        var msg = location.origin + location.pathname + "#" + hashid;
+        toast(msg + "     <span style='color:grey'>Click to Copy</span>", {timeout: 20000, click: copyToClipboard.bind(this,msg)});
+    })
+})
+
+$('#whatsapp-share').on("click", function (e) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        shareChat(function (hashid) {
+            var message = "See a conversation between " + WhatsappSim.authors.join(", ") + " at " + location.origin + location.pathname + "%23" + hashid;
+            var whatsapp_url = "whatsapp://send?text=" + message;
+            window.location.href = whatsapp_url;
+        })
+    } else {
+        toast('You Are Not On A Mobile Device. Please Use This Button To Share On Mobile');
+    }
+});
+
+function shareChat(callback) {
     var hashid = (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase()
     $.ajax({
         url: "./api.php/records/conversations",
@@ -133,12 +152,11 @@ $(".share").on("click", function () {
             conversation: encodeURI(JSON.stringify(WhatsappSim.conversation)),
             authors: encodeURI(JSON.stringify(WhatsappSim.authors))
         },
-        success: function(data) {
-            var msg = location.origin + location.pathname + "#" + hashid;
-            toast(msg + "     <span style='color:grey'>Click to Copy</span>", {timeout: 20000, click: copyToClipboard.bind(this,msg)});
-        }
+        success: function(hashid) {
+            return function (data) {callback(hashid)};
+        }(hashid)
     })
-})
+}
 
 /**
  * Hamburger menu setup

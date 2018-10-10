@@ -611,6 +611,10 @@ select:focus {
     position: relative;
 }
 
+.pane-footer .column {
+    display: flex;
+}
+
 .pane-footer .media-btns button,
 .pane-footer .aux-btns button {
     height: 40px;
@@ -636,6 +640,13 @@ select:focus {
     color: #ffffff;
 }
 
+.pane-footer .aux-btns #whatsapp-share {
+    background: #029d00;
+    background-size: contain;
+    display: none;
+    background-image: url("images/social.png");
+}
+
 .pane-footer button .typcn {
     position: relative;
 }
@@ -647,6 +658,11 @@ select:focus {
 .pane-footer button .typcn.top {
     top: -1px;
 }
+
+.pane-footer button:disabled {
+    opacity: 0.3;
+}
+
 /*Wells  */
 .well, .well-simple {
     background-color: #FFF;
@@ -767,5 +783,9 @@ select:focus {
         padding: 8px;
         font-size: 24px;
         z-index: 1;
+    }
+
+    .pane-footer .aux-btns #whatsapp-share {
+        display: block;
     }
 }
