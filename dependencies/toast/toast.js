@@ -1,3 +1,9 @@
+/*!
+ * Toasts v1.3 (https://gist.github.com/ashwin-pc/d7ea40f341739a034e332f63d9e5a070)
+ * Author: Ashwin P Chandran
+ * Licensed under MIT
+ */
+
 (function (window) {
 
     /**
