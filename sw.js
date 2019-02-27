@@ -38,8 +38,8 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
     // Cache image files
     /.*\.(?:png|jpg|jpeg|svg|gif)/,
-    // Use the cache if it's available
-    workbox.strategies.cacheFirst({
+    // Use cache but update in the background ASAP
+    workbox.strategies.staleWhileRevalidate({
         // Use a custom cache name
         cacheName: 'image-cache',
         plugins: [

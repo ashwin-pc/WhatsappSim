@@ -18,6 +18,7 @@
 
     $(document).ready(function () {
 
+        // Load conversation if exists
         if (location.hash !== "") {
             var url = "./api.php/records/conversations?filter=hashid,eq," + location.hash.slice(1);
             $.ajax({
@@ -122,6 +123,11 @@ $(".reset").on("click", function () {
     updateStats();
 })
 
+/**
+ * Setup share functionality
+ * - Share via link
+ * - Share via Whatsapp
+ */
 $(".share").on("click", function () {
     shareChat(function(hashid) {
         var msg = location.origin + location.pathname + "#" + hashid;
@@ -148,7 +154,7 @@ function shareChat(callback) {
         type: "POST",
         data: {
             hashid: hashid,
-            params: encodeURI(JSON.stringify(WhatsappSim)),
+            params: encodeURI(JSON.stringify(_objectWithoutProperties(WhatsappSim, ["authors", "conversation"]))),
             conversation: encodeURI(JSON.stringify(WhatsappSim.conversation)),
             authors: encodeURI(JSON.stringify(WhatsappSim.authors))
         },
@@ -183,7 +189,7 @@ function updateStats() {
 }
 
 /**
- * 
+ * Initialize all input feilds
  */
 function initInputs() {
     $("#output").html("");
@@ -225,6 +231,19 @@ function copyToClipboard(str) {
         toast("Copied");
     }, 201);
 };
+
+/**
+ * Copy Object without keys
+ */
+function _objectWithoutProperties(obj, keys) { 
+    var target = {}; 
+    for (var i in obj) { 
+        if (keys.indexOf(i) >= 0) continue; 
+        if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; 
+        target[i] = obj[i]; 
+    } 
+    return target; 
+}
 
 /**
  * FAQ Controller
