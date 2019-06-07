@@ -1,0 +1,60 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 3px;
+    box-shadow: 0 4px 20px #0000001f;
+    max-width: 50vw;
+    max-height: 100vh;
+    transition: opacity 0.2s ease-out;
+    opacity: 0; 
+    height: 0;
+    overflow: hidden;
+}
+
+.modal.open {
+    opacity: 1;
+    height: auto;
+
+}
+
+.modal .contents {
+    padding: 20px;
+}
+
+.modal .title {
+    margin-top: 0;
+    font-size: 19px;
+}
+
+.modal .message {
+    font-size: 13.6px;
+    margin: 0;
+}
+
+.modal-btns {
+    display: flex;
+}
+
+.modal-btns .button.hide {
+    display: none;
+}
+
+.modal-btns .button {
+    padding: 20px;
+    flex: 1;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.modal-btns .button.confirm:hover{
+    background: #8BC34A;
+    color: white;
+}
+
+.modal-btns .button.deny:hover{
+    background: #F44336;
+    color: white;
+}

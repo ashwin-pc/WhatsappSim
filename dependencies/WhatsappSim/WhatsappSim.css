@@ -394,9 +394,9 @@ select:focus {
         width: 80%;
         z-index: 1;
         transform: translateX(-100%);
-        -webkit-transition: transform 0.5s ease-in-out;
-        -moz-transition: transform 0.5s ease-in-out;
-        transition: transform 0.5s ease-in-out;
+        -webkit-transition: transform 0.2s ease-in-out;
+        -moz-transition: transform 0.2s ease-in-out;
+        transition: transform 0.2s ease-in-out;
     }
 
     .two .pane-one.open {

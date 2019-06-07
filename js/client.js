@@ -35,7 +35,7 @@
                     WhatsappSim.resetSimulation();
 
                     initInputs();
-                    $(".button").prop("disabled", false);
+                    $(".media-btn").prop("disabled", false);
                 }
             });
         } else {
@@ -79,7 +79,7 @@ $input.on("change", function () {
         }
 
         initInputs();
-        $(".button").prop("disabled", false);
+        $(".media-btn").prop("disabled", false);
     };
     reader.readAsText(self.files[0]);
 })
@@ -95,7 +95,7 @@ $("textarea").on("change", function () {
     }
 
     initInputs();
-    $(".button").prop("disabled", false);
+    $(".media-btn").prop("disabled", false);
 })
 
 
@@ -166,16 +166,22 @@ function shareChat(callback) {
 
 /**
  * Hamburger menu setup
- */
+*/
 $("#hamburger").on("click", function () {
     $(".pane-one").addClass("open");
+    $(".pane-two").on("click.hamburger", function () {
+        $(".pane-one").removeClass("open");
+        $(".pane-two").off("click.hamburger");
+    })
 });
 $("#close-menu").on("click", function () {
     $(".pane-one").removeClass("open");
+    $(".pane-two").off("click.hamburger");
 });
 
 $(".start-btn").on("click", function () {
     $(".pane-one").removeClass("open");
+    $(".pane-two").off("click.hamburger");
 })
 
 /**
@@ -244,6 +250,36 @@ function _objectWithoutProperties(obj, keys) {
     } 
     return target; 
 }
+
+/**
+ * PWA Installation
+ */
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    $(".install-btn").prop("disabled", false);
+});
+
+$(".install-btn").on("click", function () {
+    // Show the prompt
+    try {
+        deferredPrompt.prompt();
+    } catch (error) {
+        console.log(error);
+    }
+
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice
+        .then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the A2HS prompt');
+            } else {
+                console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
+        });
+});
 
 /**
  * FAQ Controller
