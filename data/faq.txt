@@ -7,6 +7,7 @@ but just mail us a sample of your chat text so that we can support it too!
 02/12/14, 7:10 PM - Siri: Thats Awful!!?
 02/12/14, 7:11 PM - Ashwin: Thats just how it is, but hey! just send us something that can help us understand the format used and we will add it
 02/12/14, 7:11 PM - Ashwin: Just send a small snippet to reachme@designedbyashw.in
+02/12/14, 7:12 PM - Ashwin: You could also try copy pasting the chat from another device which may spit out a known format
 =====FAQ=====
 QUESTION: Replay Formats?
 02/12/14, 7:08 PM - Siri: What are the different Replay Formats?!
@@ -20,3 +21,10 @@ Time Based - This looks at the time the message was sent and tries to replicate 
 Word Based - The size of the message determines the interval (Longer messages stay on for longer). Best for reading the conversation without pausing
 
 All At Once - Well some of just cant wait, so show ALL AT ONCE!
+=====FAQ=====
+QUESTION: Use offline
+02/12/14, 7:08 PM - Siri: Can this be used offline?!
+02/12/14, 7:08 PM - Ashwin: Oh yeah! WhatsappSim is a PWA. The first time you loaded the page you should have recieved an option to save the page for offline use.
+02/12/14, 7:08 PM - Ashwin: Even if you did not, you can still do so by creating a shortcut from chrome's menu (Menu > More 
+Tools > Create Shortcut) or any other browser.
+02/12/14, 7:10 PM - Ashwin: While the app is mostly offline, sharing chats do requrie an internet connection.

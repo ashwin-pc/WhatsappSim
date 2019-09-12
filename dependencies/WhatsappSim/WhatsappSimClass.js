@@ -26,7 +26,7 @@
         this.types = [
             {
                 name: "allBrackets",
-                testRegex: /^\[\d{1,2}(:|\/).+\]/,
+                testRegex: /^\[\d{1,2}(:|\/|\.).+\]/,
                 splitRegx: /(\]\s|\:\s)/,
                 hasBracket: true
             }, {
