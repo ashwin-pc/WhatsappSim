@@ -58,6 +58,9 @@
     WhatsappSimClass.prototype.parse = function parse(txt, options) {
         var self = this;
         var opts = options || {};
+        
+        txt = txt.trim()
+
         var txtArr = txt.split('\n');
         var type, txtObArr = [], txtOb = null, lineSplit, noSelfPresent = true;
 

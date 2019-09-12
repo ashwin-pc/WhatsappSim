@@ -1,3 +1,5 @@
 backup
 js/analytics.js
 config.ini
+deploy.sh
+Makefile
